@@ -1,0 +1,18 @@
+---
+// Header.astro
+---
+<header class="border-b bg-white px-6 py-4">
+  <nav class="flex gap-8 max-w-295 mx-auto">
+    {/* Ссылка 1: Выезжающая линия снизу */}
+    <a href="/" class="group relative py-1 font-medium text-gray-700 transition-colors hover:text-[#c85535]">
+      Главная
+      <span class="absolute inset-x-0 bottom-0 h-[2px] w-0 bg-[#c85535] transition-all duration-300 group-hover:w-full"></span>
+    </a>
+
+    {/* Ссылка 2: Подчеркивание из центра в стороны */}
+    <a href="/user/blogs" class="group relative py-1 font-medium text-gray-700 transition-colors hover:text-[#c85535]">
+      Блог
+      <span class="absolute bottom-0 left-1/2 h-[2px] w-0 -translate-x-1/2 bg-[#c85535] transition-all duration-300 group-hover:w-full"></span>
+    </a>
+  </nav>
+</header>
