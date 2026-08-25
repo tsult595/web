@@ -1,48 +1,91 @@
 import { useEffect, useState } from "react";
-
-const FONT_IMPORT = `@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600;700&display=swap');`;
+import AnimatedHeading from "./AnimatedHeading";
 
 const LoadingScreen = ({ onComplete }: { onComplete?: () => void }) => {
   const [progress, setProgress] = useState(0);
   const [isLeaving, setIsLeaving] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsLeaving(true);
+    let animationFrame = 0;
+    let pauseTimeout = 0;
+    let isMounted = true;
+    let currentProgress = 0;
 
-          // Триггерим заезд главной страницы ровно в момент старта ухода лоадера
-          if (typeof window !== "undefined") {
-            window.dispatchEvent(new Event("start-page-enter"));
-          }
-
-          setTimeout(() => onComplete?.(), 650);
-          return 100;
-        }
-        const step = prev < 70 ? 4 : 2;
-        return Math.min(prev + step, 100);
+    const wait = (duration: number) =>
+      new Promise<void>((resolve) => {
+        pauseTimeout = window.setTimeout(resolve, duration);
       });
-    }, 80);
 
-    return () => clearInterval(interval);
+    const animateTo = (target: number, duration: number) =>
+      new Promise<void>((resolve) => {
+        const start = performance.now();
+        const initial = currentProgress;
+
+        const tick = (now: number) => {
+          if (!isMounted) return resolve();
+
+          const elapsed = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - elapsed, 3);
+          currentProgress = initial + (target - initial) * eased;
+          setProgress(currentProgress);
+
+          if (elapsed < 1) {
+            animationFrame = requestAnimationFrame(tick);
+          } else {
+            currentProgress = target;
+            setProgress(target);
+            resolve();
+          }
+        };
+
+        animationFrame = requestAnimationFrame(tick);
+      });
+
+const runLoading = async () => {
+  // Один сигнал одновременно запускает заголовок и движение прогресса.
+  window.dispatchEvent(new Event("start-page-enter"));
+
+  await animateTo(33, 500);
+  await wait(260);
+  await animateTo(66, 500);
+
+  await wait(260);
+
+  await animateTo(100, 850);
+
+  if (!isMounted) return;
+  setIsLeaving(true);
+
+  pauseTimeout = window.setTimeout(() => onComplete?.(), 800);
+};
+
+    runLoading();
+
+    return () => {
+      isMounted = false;
+      cancelAnimationFrame(animationFrame);
+      window.clearTimeout(pauseTimeout);
+    };
   }, [onComplete]);
 
   return (
-    <div
-      className={`fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-[#F0692A] p-6 sm:p-10 ${
+    <aside
+      aria-label="Загрузка страницы"
+      className={`fixed inset-0 z-100 flex flex-col justify-between overflow-hidden bg-[#F0692A] p-6 sm:p-10 ${
         isLeaving ? "animate-slide-out-pause" : "translate-x-0"
       }`}
     >
-      <style>{FONT_IMPORT}</style>
-
       {/* ВЕРХНЯЯ БЕЖЕВАЯ СТРОКА */}
-      <div className="relative flex h-12 w-full items-center justify-between bg-[#FDF6DC] px-4 select-none overflow-hidden rounded-sm">
-        
+      <div 
+        role="progressbar" 
+        aria-valuenow={Math.round(progress)} 
+        aria-valuemin={0} 
+        aria-valuemax={100}
+        className="relative flex h-12 w-full items-center justify-between overflow-hidden  bg-[#FDF6DC] px-5 select-none"
+      >
         {/* Логотип "M" */}
         <span
-          className="relative z-20 text-2xl font-black text-[#1F1F1E] leading-none"
+          className="relative z-30 text-2xl font-black leading-none text-[#1F1F1E]"
           style={{ fontFamily: "'Anton', sans-serif" }}
         >
           M
@@ -50,41 +93,34 @@ const LoadingScreen = ({ onComplete }: { onComplete?: () => void }) => {
 
         {/* СЧЁТЧИК */}
         <div
-          className="absolute inset-y-0 flex items-center z-10 transition-all duration-75 ease-out"
+          className="absolute inset-y-0 z-20 flex items-center will-change-transform"
           style={{
-            left: `max(50px, calc(100% - ${progress}% - 45px))`,
+            right: `min(calc(100% - 160px), ${progress}%)`,
+            transform: "translateZ(0)",
           }}
         >
           <span
-            className="text-sm font-bold text-[#1F1F1E] tabular-nums whitespace-nowrap"
+            className="whitespace-nowrap pr-3 text-sm font-bold tabular-nums text-[#1F1F1E]"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            {Math.floor(progress)}%
+            {Math.round(progress)}%
           </span>
         </div>
 
         {/* ОРАНЖЕВЫЙ БАР */}
         <div
-          className="absolute inset-y-0 right-0 bg-[#F0692A] transition-all duration-75 ease-out"
-          style={{ width: `${progress}%` }}
-        />
+          className="absolute inset-y-0 right-0 z-10 bg-[#F0692A]"
+          style={{
+            width: `min(calc(100% - 160px), ${progress}%)`,
+          }}
+        />  
       </div>
 
       {/* НИЖНИЙ ЗАГОЛОВОК */}
-      <div className="pt-12">
-        <h1
-          className="text-[#FDF6DC] leading-[0.85] tracking-tight select-none uppercase"
-          style={{
-            fontFamily: "'Anton', sans-serif",
-            fontSize: "clamp(3.5rem, 13vw, 10rem)",
-          }}
-        >
-          ANIMATION
-          <br />
-          2D & 3D
-        </h1>
-      </div>
-    </div>
+      <header className="pt-12">
+        <AnimatedHeading />
+      </header>
+    </aside>
   );
 };
 

@@ -2,14 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/user/mainPage/Hero.astro';
 import { IndexPageClient } from '../pages/user/IndexPageClient';
-import LoadingScreen from '../pages/user/LoadingScreen';
 ---
 
 <Layout title="Tanitim.az — Главная">
-  {/* Напрямую задаем начальное положение -20px и плавность перехода */}
-  <div 
-    id="main-content" 
-    style="transform: translateX(-20px); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);"
+  <div
+    id="main-content"
+    style="position: relative; right: -20px; transition: right 0.8s cubic-bezier(0.16, 1, 0.3, 1);"
   >
     <IndexPageClient client:load>
       <main>
@@ -18,15 +16,11 @@ import LoadingScreen from '../pages/user/LoadingScreen';
     </IndexPageClient>
   </div>
 
-  <LoadingScreen client:only="react" />
-
   <script>
-    // Слушаем сигнал от лоадера о старте закрытия
     window.addEventListener('start-page-enter', () => {
       const mainContent = document.getElementById('main-content');
       if (mainContent) {
-        // Доезжаем до 0px
-        mainContent.style.transform = 'translateX(0)';
+        mainContent.style.right = '0';
       }
     });
   </script>
