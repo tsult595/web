@@ -1,11 +1,13 @@
+
+
 export default function Header() {
   return (
-    <header className="w-full bg-amber-400">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between text-white">
+    <header className="w-full ">
+      <nav className="mx-auto flex w-full items-center justify-between text-white">
         {/* Логотип */}
-        <a href="/" className="text-2xl font-black tracking-wider uppercase select-none">
-          Tanitim.az
-        </a>
+       <div className="h-full w-50">
+        <img src="/tanitim_logo.png" alt="Logo" className="h-full w-full object-cover" />
+       </div>
 
         {/* Навигационные ссылки */}
         <div className="hidden items-center gap-8 md:flex text-sm font-medium">

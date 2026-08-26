@@ -42,25 +42,22 @@ const LoadingScreen = ({ onComplete }: { onComplete?: () => void }) => {
       });
 
 const runLoading = async () => {
-  // Один сигнал одновременно запускает заголовок и движение прогресса.
   window.dispatchEvent(new Event("start-page-enter"));
 
-  await animateTo(33, 500);
-  await wait(260);
-  await animateTo(66, 500);
+  await animateTo(34, 460);
+  await wait(240);
 
-  await wait(260);
+  await animateTo(67, 460);
+  await wait(240);
 
-  await animateTo(100, 850);
+  await animateTo(100, 500);   // почти такая же скорость, как предыдущие
 
   if (!isMounted) return;
   setIsLeaving(true);
 
-  // Отдельный сигнал: фоновая картинка Hero начинает заезд
-  // именно в момент закрытия лоадера.
   window.dispatchEvent(new Event("loading-screen-closing"));
 
-  pauseTimeout = window.setTimeout(() => onComplete?.(), 800);
+  pauseTimeout = window.setTimeout(() => onComplete?.(), 720);
 };
 
     runLoading();
@@ -75,7 +72,7 @@ const runLoading = async () => {
   return (
     <aside
       aria-label="Загрузка страницы"
-      className={`fixed inset-0 z-100 flex flex-col justify-between overflow-hidden bg-[#F0692A] p-6 sm:p-10 ${
+      className={`fixed inset-0 z-100 flex flex-col justify-between overflow-hidden bg-[#F88C0A] p-6 sm:p-10 ${
         isLeaving ? "animate-slide-out-pause" : "translate-x-0"
       }`}
     >
@@ -88,18 +85,18 @@ const runLoading = async () => {
         className="relative flex h-12 w-full items-center justify-between overflow-hidden  bg-[#FDF6DC] px-5 select-none"
       >
         {/* Логотип "M" */}
-        <span
-          className="relative z-30 text-2xl font-black leading-none text-[#1F1F1E]"
-          style={{ fontFamily: "'Anton', sans-serif" }}
-        >
-          M
-        </span>
+ 
+      <img 
+      src="/tanitim_logo.png" 
+      alt="Tanitim Logo" 
+      className="relative z-30 h-7 w-auto object-contain select-none" 
+      />
 
         {/* СЧЁТЧИК */}
         <div
           className="absolute inset-y-0 z-20 flex items-center will-change-transform font-mono"
           style={{
-            right: `min(calc(100% - 160px), ${progress}%)`,
+            right: `min(calc(100% - 170px), ${progress}%)`,
             transform: "translateZ(0)",
           }}
         >
@@ -113,7 +110,7 @@ const runLoading = async () => {
 
         {/* ОРАНЖЕВЫЙ БАР */}
         <div
-          className="absolute inset-y-0 right-0 z-10 bg-[#F0692A]"
+          className="absolute inset-y-0 right-0 z-10 bg-[#F88C0A]"
           style={{
             width: `min(calc(100% - 160px), ${progress}%)`,
           }}

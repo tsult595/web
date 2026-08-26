@@ -1,29 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/user/mainPage/Hero.tsx';
 import { IndexPageClient } from '../pages/user/IndexPageClient';
+import HeroSection from '../components/user/mainPage/Hero.tsx';
 ---
 
 <Layout title="Tanitim.az — Главная">
-  <div style="overflow: hidden; width: 100%;">
+  <IndexPageClient client:load>
+    <!-- ОБЩИЙ ОБЕРТЫВАЮЩИЙ КОНТЕЙНЕР ДЛЯ ВСЕХ СЕКЦИЙ -->
     <div
-      id="main-content"
-      style="position: relative; width: calc(100% + 70px); right: -70px; transition: right 0.8s cubic-bezier(0.16, 1, 0.3, 1);"
+      id="page-sections-wrapper"
+      class="w-full will-change-transform translate-x-[180px] transition-transform duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
     >
-      <IndexPageClient client:load>
-      
-        <main>
-          <Hero />
-        </main>
-      </IndexPageClient>
+      <main>
+        <HeroSection client:load />
+      </main>
     </div>
-  </div>
+  </IndexPageClient>
 
   <script>
+    // По событию закрытия лоадера синхронно смещаем ВСЕ секции с 70px на 0px
     window.addEventListener('loading-screen-closing', () => {
-      const mainContent = document.getElementById('main-content');
-      if (mainContent) {
-        mainContent.style.right = '0px';
+      const wrapper = document.getElementById('page-sections-wrapper');
+      if (wrapper) {
+        wrapper.classList.remove('translate-x-[180px]');
+        wrapper.classList.add('translate-x-0');
       }
     });
   </script>
