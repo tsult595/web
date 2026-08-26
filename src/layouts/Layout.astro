@@ -1,5 +1,4 @@
 ---
-import Header from '../components/user/Header.astro';
 import '../styles/global.css';
 
 const { title = "Tanitim.az" } = Astro.props;
@@ -14,7 +13,6 @@ const { title = "Tanitim.az" } = Astro.props;
   </head>
   <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
     <div class="site-shell flex min-h-screen flex-col">
-      <Header />
       <main class="flex-1">
         <slot /> 
       </main>

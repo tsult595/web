@@ -56,6 +56,10 @@ const runLoading = async () => {
   if (!isMounted) return;
   setIsLeaving(true);
 
+  // Отдельный сигнал: фоновая картинка Hero начинает заезд
+  // именно в момент закрытия лоадера.
+  window.dispatchEvent(new Event("loading-screen-closing"));
+
   pauseTimeout = window.setTimeout(() => onComplete?.(), 800);
 };
 

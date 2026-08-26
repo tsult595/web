@@ -1,26 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/user/mainPage/Hero.astro';
+import Hero from '../components/user/mainPage/Hero.tsx';
 import { IndexPageClient } from '../pages/user/IndexPageClient';
 ---
 
 <Layout title="Tanitim.az — Главная">
-  <div
-    id="main-content"
-    style="position: relative; right: -20px; transition: right 0.8s cubic-bezier(0.16, 1, 0.3, 1);"
-  >
-    <IndexPageClient client:load>
-      <main>
-        <Hero />
-      </main>
-    </IndexPageClient>
+  <div style="overflow: hidden; width: 100%;">
+    <div
+      id="main-content"
+      style="position: relative; width: calc(100% + 70px); right: -70px; transition: right 0.8s cubic-bezier(0.16, 1, 0.3, 1);"
+    >
+      <IndexPageClient client:load>
+      
+        <main>
+          <Hero />
+        </main>
+      </IndexPageClient>
+    </div>
   </div>
 
   <script>
-    window.addEventListener('start-page-enter', () => {
+    window.addEventListener('loading-screen-closing', () => {
       const mainContent = document.getElementById('main-content');
       if (mainContent) {
-        mainContent.style.right = '10px';
+        mainContent.style.right = '0px';
       }
     });
   </script>
