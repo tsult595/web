@@ -93,7 +93,7 @@ const runLoading = async () => {
 
         {/* СЧЁТЧИК */}
         <div
-          className="absolute inset-y-0 z-20 flex items-center will-change-transform"
+          className="absolute inset-y-0 z-20 flex items-center will-change-transform font-mono"
           style={{
             right: `min(calc(100% - 160px), ${progress}%)`,
             transform: "translateZ(0)",

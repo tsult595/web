@@ -6,16 +6,15 @@ const { title = "Tanitim.az" } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="az">
+<html lang="az" class="overflow-x-hidden">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
   </head>
-  <body class="bg-white text-gray-900 antialiased">
+  <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
     <div class="site-shell flex min-h-screen flex-col">
       <Header />
-      {/* Слот свободен — теперь любые блоки могут быть как на 100% ширины, так и в контейнере */}
       <main class="flex-1">
         <slot /> 
       </main>

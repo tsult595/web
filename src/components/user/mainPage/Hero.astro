@@ -4,16 +4,21 @@
 ---
 
 
+<section class="relative w-full py-16 text-white overflow-hidden">
+  <!-- 1. Фоновая картинка (без -z-10) -->
+  <img
+    src="/bg.jpg"
+    alt=""
+    class="absolute inset-0 h-full w-full object-cover"
+  />
+  
+  <!-- 2. Темный оверлей поверх картинки -->
+  <div class="absolute inset-0 bg-black/40"></div>
 
-<section class="py-12">
-  <div class="mx-auto max-w-295">
-    <!-- Контент зажат по центру -->
-     <p>alalalal</p>
-  </div>
-</section>
-<section class="w-full bg-slate-900 py-16 text-white">
-  {/* Сам контент внутри баннера все равно ровняем по центру */}
-  <div class="mx-auto max-w-295 px-4">
-    <h2>Баннер на всю ширину экрана!</h2>
+  <!-- 3. Контент (z-10 гарантирует, что текст будет ПОВЕРХ картинки и оверлея) -->
+  <div class="relative z-10 mx-auto max-w-[1180px] px-4">
+    <h2 class="text-4xl font-bold">
+      Baner tam eninə ekran!
+    </h2>
   </div>
 </section>

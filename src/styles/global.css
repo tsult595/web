@@ -67,3 +67,4 @@ a { color: inherit; text-decoration: none; }
   /* Синхронизируем тайминг и кривую вылета с уходящим LoadingScreen */
   animation: slideInFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
