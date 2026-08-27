@@ -80,6 +80,7 @@ import AnimatedHeading from './AnimatedHeading.tsx';
 
       const tick = (now: number) => {
         const elapsed = Math.min((now - start) / duration, 1);
+        // Выравнивание по кубической кривой для мягкого замедления
         const eased = 1 - Math.pow(1 - elapsed, 3);
         currentProgress = initial + (target - initial) * eased;
         updateProgress(currentProgress);
@@ -98,19 +99,27 @@ import AnimatedHeading from './AnimatedHeading.tsx';
   };
 
   const runLoading = async () => {
+    // 1. Старт анимации букв
     document.body.classList.add('page-entered');
     window.dispatchEvent(new Event('start-page-enter'));
 
-    await animateTo(34, 460);
-    await wait(240);
+    // 2. РАВНОМЕРНЫЕ ШАГИ (по 33.33% каждый)
+    await animateTo(33, 550);
+    await wait(180);
 
-    await animateTo(67, 460);
-    await wait(240);
+    await animateTo(66, 550);
+    await wait(180);
 
-    await animateTo(100, 500);
+    await animateTo(100, 550);
 
-    // Добавляем класс анимации ухода экранa
-    screenEl?.classList.add('animate-slide-out-pause');
+    // 3. Короткая фиксация на 100% перед уходом
+    await wait(100);
+
+    // 4. Плавный выезд
+    if (screenEl) {
+      screenEl.style.transition = 'transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)';
+      screenEl.style.transform = 'translateX(-100%)';
+    }
 
     document.body.classList.add('loading-closed');
     window.dispatchEvent(new Event('loading-screen-closing'));

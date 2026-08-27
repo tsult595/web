@@ -7,17 +7,16 @@ const AnimatedHeading = () => {
   useEffect(() => {
     const handler = () => setPlay(true);
 
+    // 1. Слушаем событие старта от LoadingScreen
     window.addEventListener("start-page-enter", handler);
 
-    // Страховка: если экран уже в процессе загрузки или загрузился, 
-    // запускаем анимацию мгновенно через 50ms
-    const timer = setTimeout(() => {
+    // 2. Страховка: если лоадер уже запустился до гидратации React-компонента
+    if (document.body.classList.contains("page-entered")) {
       setPlay(true);
-    }, 50);
+    }
 
     return () => {
       window.removeEventListener("start-page-enter", handler);
-      clearTimeout(timer);
     };
   }, []);
 
