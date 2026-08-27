@@ -1,0 +1,60 @@
+---
+import Header from '../Header.astro';
+import AboutSection from './AboutSection';
+---
+
+<div class="relative w-full h-screen overflow-hidden bg-black">
+  
+  <!-- 1. ФИКСИРОВАННЫЙ ХЕДЕР -->
+  <div 
+    id="hero-header"
+    class="fixed top-0 left-0 right-0 z-50 p-6 sm:p-10 pointer-events-auto opacity-0 transition-opacity duration-700 ease-out"
+  >
+    <Header />
+  </div>
+
+  <!-- 2. ФОН HERO -->
+  <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div 
+      id="hero-bg"
+      class="h-full bg-cover bg-center -translate-x-[20px] transition-transform duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+      style="background-image: url('/test.avif'); width: 120%;"
+    >
+    </div>
+  </div>
+
+  <!-- 3. КОНТЕНТ HERO -->
+  <div class="relative z-10 flex flex-col justify-between w-full h-full p-6 pt-28 sm:p-10 sm:pt-36">
+    <div class="flex-1">
+      <h1 class="text-5xl font-bold text-white">Tanitim.azzzzzzzzzzzzz</h1>
+    </div>
+
+    <!-- Интерактивный React-компонент загружается отдельно -->
+    <AboutSection client:load />
+  </div>
+
+</div>
+
+<script>
+  const handleClosing = () => {
+    const bg = document.getElementById('hero-bg');
+    const header = document.getElementById('hero-header');
+
+    if (bg) {
+      bg.classList.remove('-translate-x-[20px]');
+      bg.classList.add('translate-x-0');
+    }
+
+    if (header) {
+      header.classList.remove('opacity-0');
+      header.classList.add('opacity-100');
+    }
+  };
+
+  // Проверяем статус лоадера
+  if (document.body.classList.contains('loading-closed')) {
+    handleClosing();
+  } else {
+    window.addEventListener('loading-screen-closing', handleClosing);
+  }
+</script>

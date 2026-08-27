@@ -1,0 +1,120 @@
+---
+import AnimatedHeading from './AnimatedHeading.tsx';
+---
+
+<aside
+  id="loading-screen"
+  aria-label="Загрузка страницы"
+  class="fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-[#F88C0A] p-6 sm:p-10 transition-transform duration-700 ease-in-out"
+>
+  <!-- ВЕРХНЯЯ БЕЖЕВАЯ СТРОКА -->
+  <div 
+    id="progress-bar-container"
+    role="progressbar" 
+    aria-valuenow="0" 
+    aria-valuemin="0" 
+    aria-valuemax="100"
+    class="relative flex h-12 w-full items-center justify-between overflow-hidden bg-[#FDFABB] px-3 select-none"
+  >
+    <!-- ЛОГОТИП -->
+    <img 
+      src="/tanitim_logo.png" 
+      alt="Tanitim Logo" 
+      class="relative z-30 h-7 w-auto object-contain select-none" 
+    />
+
+    <!-- СЧЁТЧИК % -->
+    <div
+      id="progress-counter"
+      class="absolute inset-y-0 z-20 flex items-center will-change-transform"
+      style="right: 0%; transform: translateZ(0);"
+    >
+      <span
+        id="progress-text"
+        class="whitespace-nowrap pr-3 text-[15px] font-bold tabular-nums text-[#1F1F1E]"
+        style="font-family: 'Inter', sans-serif;"
+      >
+        0%
+      </span>
+    </div>
+
+    <!-- ОРАНЖЕВЫЙ БАР -->
+    <div
+      id="progress-fill"
+      class="absolute inset-y-0 right-0 z-10 bg-[#F88C0A]"
+      style="width: 0%;"
+    ></div>  
+  </div>
+
+  <!-- НИЖНИЙ ЗАГОЛОВОК (React-компонент с анимацией букв) -->
+  <header class="pt-12">
+    <AnimatedHeading client:load />
+  </header>
+</aside>
+
+<script>
+  let currentProgress = 0;
+
+  const counterEl = document.getElementById('progress-counter');
+  const textEl = document.getElementById('progress-text');
+  const fillEl = document.getElementById('progress-fill');
+  const containerEl = document.getElementById('progress-bar-container');
+  const screenEl = document.getElementById('loading-screen');
+
+  const updateProgress = (val: number) => {
+    const rounded = Math.round(val);
+    if (textEl) textEl.textContent = `${rounded}%`;
+    if (containerEl) containerEl.setAttribute('aria-valuenow', rounded.toString());
+
+    const widthStyle = `min(calc(100% - 170px), ${val}%)`;
+    if (counterEl) counterEl.style.right = widthStyle;
+    if (fillEl) fillEl.style.width = widthStyle;
+  };
+
+  const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
+  const animateTo = (target: number, duration: number) => {
+    return new Promise<void>((resolve) => {
+      const start = performance.now();
+      const initial = currentProgress;
+
+      const tick = (now: number) => {
+        const elapsed = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - elapsed, 3);
+        currentProgress = initial + (target - initial) * eased;
+        updateProgress(currentProgress);
+
+        if (elapsed < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          currentProgress = target;
+          updateProgress(target);
+          resolve();
+        }
+      };
+
+      requestAnimationFrame(tick);
+    });
+  };
+
+  const runLoading = async () => {
+    document.body.classList.add('page-entered');
+    window.dispatchEvent(new Event('start-page-enter'));
+
+    await animateTo(34, 460);
+    await wait(240);
+
+    await animateTo(67, 460);
+    await wait(240);
+
+    await animateTo(100, 500);
+
+    // Добавляем класс анимации ухода экранa
+    screenEl?.classList.add('animate-slide-out-pause');
+
+    document.body.classList.add('loading-closed');
+    window.dispatchEvent(new Event('loading-screen-closing'));
+  };
+
+  runLoading();
+</script>

@@ -1,29 +1,36 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { IndexPageClient } from '../pages/user/IndexPageClient';
-import HeroSection from '../components/user/mainPage/Hero.tsx';
+import HeroSection from '../components/user/mainPage/Hero.astro';
+import LoadingScreen from './user/LoadingScreen.astro';
 ---
 
 <Layout title="Tanitim.az — Главная">
-  <IndexPageClient client:load>
-    <!-- ОБЩИЙ ОБЕРТЫВАЮЩИЙ КОНТЕЙНЕР ДЛЯ ВСЕХ СЕКЦИЙ -->
-    <div
-      id="page-sections-wrapper"
-      class="w-full will-change-transform translate-x-[260px] transition-transform duration-[550ms] ease-[cubic-bezier(0.19,1,0.22,1)]"
-    >
-      <main>
-        <HeroSection client:load />
-      </main>
-    </div>
-  </IndexPageClient>
+  <!-- 1. Прелоадер на Astro -->
+  <LoadingScreen />
+
+  <!-- 2. ОБЩИЙ ОБЕРТЫВАЮЩИЙ КОНТЕЙНЕР ДЛЯ ВСЕХ СЕКЦИЙ -->
+  <div
+    id="page-sections-wrapper"
+    class="w-full will-change-transform translate-x-[260px] transition-transform duration-[550ms] ease-[cubic-bezier(0.19,1,0.22,1)]"
+  >
+    <HeroSection />
+  </div>
 
   <script>
-    // По событию закрытия лоадера синхронно смещаем ВСЕ секции с 70px на 0px
+    // 1. По событию закрытия лоадера синхронно смещаем ВСЕ секции с 260px на 0px
     window.addEventListener('loading-screen-closing', () => {
       const wrapper = document.getElementById('page-sections-wrapper');
       if (wrapper) {
         wrapper.classList.remove('translate-x-[260px]');
         wrapper.classList.add('translate-x-0');
+      }
+
+      // 2. Полностью удаляем LoadingScreen из DOM после завершения анимации выезда
+      const loader = document.getElementById('loading-screen');
+      if (loader) {
+        setTimeout(() => {
+          loader.remove();
+        }, 720);
       }
     });
   </script>

@@ -12,8 +12,8 @@ const { title = "Tanitim.az" } = Astro.props;
     <title>{title}</title>
   </head>
   <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
-    <div class="site-shell flex min-h-screen flex-col">
-      <main class="flex-1">
+    <div class="site-shell flex min-h-screen flex-col overflow-x-hidden">
+      <main class="flex-1 w-full">
         <slot /> 
       </main>
     </div>
