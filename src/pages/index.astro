@@ -9,7 +9,7 @@ import HeroSection from '../components/user/mainPage/Hero.tsx';
     <!-- ОБЩИЙ ОБЕРТЫВАЮЩИЙ КОНТЕЙНЕР ДЛЯ ВСЕХ СЕКЦИЙ -->
     <div
       id="page-sections-wrapper"
-      class="w-full will-change-transform translate-x-[180px] transition-transform duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+      class="w-full will-change-transform translate-x-[260px] transition-transform duration-[550ms] ease-[cubic-bezier(0.19,1,0.22,1)]"
     >
       <main>
         <HeroSection client:load />
@@ -22,7 +22,7 @@ import HeroSection from '../components/user/mainPage/Hero.tsx';
     window.addEventListener('loading-screen-closing', () => {
       const wrapper = document.getElementById('page-sections-wrapper');
       if (wrapper) {
-        wrapper.classList.remove('translate-x-[180px]');
+        wrapper.classList.remove('translate-x-[260px]');
         wrapper.classList.add('translate-x-0');
       }
     });

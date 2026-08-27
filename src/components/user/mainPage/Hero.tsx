@@ -30,13 +30,13 @@ const HeroSection = () => {
         <motion.div
           className="h-full bg-cover bg-center"
           style={{
-            backgroundImage: "url('/bg.jpg')",
-            width: "110%",
+            backgroundImage: "url('/test.avif')",
+            width: "120%",
           }}
           initial={{ x: -20 }}
           animate={{ x: revealed ? 0 : -20 }}
           transition={{
-            duration: 1.8,
+            duration: 1.1,
             ease: [0.16, 1, 0.3, 1],
           }}
         />

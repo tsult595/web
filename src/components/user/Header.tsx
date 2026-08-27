@@ -2,10 +2,10 @@
 
 export default function Header() {
   return (
-    <header className="w-full ">
+    <header className="w-full">
       <nav className="mx-auto flex w-full items-center justify-between text-white">
         {/* Логотип */}
-       <div className="h-full w-50">
+       <div className="h-9 w-45">
         <img src="/tanitim_logo.png" alt="Logo" className="h-full w-full object-cover" />
        </div>
 
@@ -28,7 +28,7 @@ export default function Header() {
         {/* Кнопка действия */}
         <a
           href="#contact"
-          className="rounded-full bg-[#F0692A] px-5 py-2.5 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95"
+          className=" bg-[#F0692A] px-5 py-2.5 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95"
         >
           Sifariş et
         </a>

@@ -21,50 +21,17 @@ a { color: inherit; text-decoration: none; }
   background: radial-gradient(circle at 82% 30%, #d4dfd0 0, transparent 30%), #e9eee7; 
 }
 
-/* ИСПРАВЛЕНО: Добавлен явный translateY(0) */
-@keyframes rise { 
-  from { 
-    opacity: 0; 
-    transform: translateY(28px) rotate(-12deg); 
-  } 
-  to { 
-    opacity: 1; 
-    transform: translateY(0) rotate(-12deg); 
-  } 
-}
 
-@keyframes slideOutWithPause {
+
+@keyframes slide-out-pause {
   0% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-120%);
   }
 }
 
-/* ИСПРАВЛЕНО: Добавлено аппаратное ускорение для плавного ухода */
 .animate-slide-out-pause {
-  will-change: transform;
-  animation: slideOutWithPause 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: slide-out-pause 1s cubic-bezier(0.40, 0.1, 0.20, 1) forwards;
 }
-
-@keyframes slideInFromLeft {
-  0% {
-    /* Стартует с правым смещением в +10px (тот самый микро-сдвиг влево при старте) */
-    transform: translateX(10px);
-  }
-  /* Короткий паузовый эффект/замах синхронно с лоадером */
-  20% {
-    transform: translateX(0px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.animate-page-enter {
-  will-change: transform;
-  /* Синхронизируем тайминг и кривую вылета с уходящим LoadingScreen */
-  animation: slideInFromLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-

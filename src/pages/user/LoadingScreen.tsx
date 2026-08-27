@@ -82,7 +82,7 @@ const runLoading = async () => {
         aria-valuenow={Math.round(progress)} 
         aria-valuemin={0} 
         aria-valuemax={100}
-        className="relative flex h-12 w-full items-center justify-between overflow-hidden  bg-[#FDF6DC] px-5 select-none"
+        className="relative flex h-12 w-full items-center justify-between overflow-hidden bg-[#FDFABB] px-1 select-none"
       >
         {/* Логотип "M" */}
  
@@ -93,20 +93,21 @@ const runLoading = async () => {
       />
 
         {/* СЧЁТЧИК */}
-        <div
-          className="absolute inset-y-0 z-20 flex items-center will-change-transform font-mono"
-          style={{
-            right: `min(calc(100% - 170px), ${progress}%)`,
-            transform: "translateZ(0)",
-          }}
-        >
-          <span
-            className="whitespace-nowrap pr-3 text-sm font-bold tabular-nums text-[#1F1F1E]"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            {Math.round(progress)}%
-          </span>
-        </div>
+      
+    <div
+     className="absolute inset-y-0 z-20 flex items-center will-change-transform"
+     style={{
+     right: `min(calc(100% - 170px), ${progress}%)`,
+    transform: "translateZ(0)",
+    }}
+   >
+  <span
+    className="whitespace-nowrap pr-3 text-[15px] font-bold tabular-nums text-[#1F1F1E]"
+    style={{ fontFamily: "'Inter', sans-serif" }}
+  >
+    {Math.round(progress)}%
+  </span>
+  </div>
 
         {/* ОРАНЖЕВЫЙ БАР */}
         <div
